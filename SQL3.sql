@@ -27,11 +27,15 @@ where customer_id>=1 and customer_id<2;
 select customer_id,amount, sum (amount) over(order by customer_id) as Total_amount
 from payment
 
-select customer_id,amount, sum (amount) over my_window as cumulative_amount
-from payment p
-WINDOW
-  my_window AS (PARTITION BY p.customer_id order by p.customr_id)
-  
+select 
+p. customer_id,
+p.amount,
+sum(p.amount) over(order by customer_id) as Total_amount,
+sum(p.amount) over (PARTITION BY customer_id order by payment_date) as cumulative_amount 
+from 
+payment p
+window
+my_window as (PARTITION BY p.customer_id)
 
 
 
